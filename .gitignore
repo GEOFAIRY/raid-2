@@ -1,0 +1,12 @@
+raid-finder/.DS_Store
+raid-finder/dist/electron/*
+raid-finder/dist/web/*
+raid-finder/build/*
+raid-finder/!build/icons
+raid-finder/coverage
+raid-finder/node_modules/
+raid-finder/npm-debug.log
+raid-finder/npm-debug.log.*
+raid-finder/thumbs.db
+raid-finder/!.gitkeep
+raid-finder/.vscode
