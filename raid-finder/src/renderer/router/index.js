@@ -11,11 +11,6 @@ export default new Router({
       component: require('@/components/RaidSelector/RaidSelector').default
     },
     {
-      path: '/landing-page',
-      name: 'landing-page',
-      component: require('@/components/LandingPage').default
-    },
-    {
       path: '*',
       redirect: '/'
     }

@@ -4,7 +4,7 @@
       <img class="card-image" :src="card.image" alt="Cannot find image" />
       <div class="container">
         <h4>
-          <b>{{ card.title }}</b>
+          <b class="text">{{ card.title }}</b>
         </h4>
       </div>
     </div>
@@ -64,6 +64,15 @@ export default {
 </script>
 
 <style scoped>
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .text { font-family: neue-haas-grotesk-display, sans-serif; }
+
 #cards {
   display: inline-grid;
   grid-template-columns: auto auto auto;
