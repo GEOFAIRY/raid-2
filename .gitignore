@@ -10,3 +10,7 @@ raid-finder/npm-debug.log.*
 raid-finder/thumbs.db
 raid-finder/!.gitkeep
 raid-finder/.vscode
+raid-api/.vscode
+raid-api/__pycache__
+raid-api/Pipfile.lock
+raid-api/db.sqlite
