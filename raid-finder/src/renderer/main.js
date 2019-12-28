@@ -9,10 +9,18 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
+Vue.mixin({
+  data: function () {
+    return {
+      serverAddress: 'http://127.0.0.1:5000/'
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
-  components: { App },
-  router,
-  store,
-  template: '<App/>'
-}).$mount('#app')
+  el: '#app',
+  router: router,
+  store: store,
+  render: h => h(App)
+})

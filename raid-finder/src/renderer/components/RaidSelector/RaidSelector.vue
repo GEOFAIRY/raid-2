@@ -1,10 +1,10 @@
 <template>
   <div id="cards">
-    <div class="card" v-for="card in cards" v-bind:key="card.id">
-      <img class="card-image" :src="card.image" alt="Cannot find image" />
+    <div class="card" v-for="raid in raids" v-bind:key="raid.id">
+      <img class="card-image" :src="raid.image" alt="Cannot find image" />
       <div class="container">
         <h4>
-          <b class="text">{{ card.title }}</b>
+          <b class="text">{{ raid.name }}</b>
         </h4>
       </div>
     </div>
@@ -14,64 +14,35 @@
 <script>
 export default {
   name: 'raid-selector',
-  data: () => ({
-    cards: [
-      {
-        title: 'Leviathan',
-        id: 1,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raid_gluttony.jpg'
-      },
-      {
-        title: 'Eater of worlds',
-        id: 2,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raids_leviathan_eater_of_worlds.jpg'
-      },
-      {
-        title: 'Spire of stars',
-        id: 3,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raid_greed.jpg'
-      },
-      {
-        title: 'The Last Wish',
-        id: 4,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raid_beanstalk.jpg'
-      },
-      {
-        title: 'Scourge of the Past',
-        id: 5,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raids.1305rh0093145r13t5hn10tnz.raid_sunset.jpg'
-      },
-      {
-        title: 'Crown of Sorrow',
-        id: 6,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raid_eclipse.jpg'
-      },
-      {
-        title: 'Garden of Salvation',
-        id: 7,
-        image:
-          'https://stats.bungie.net/img/destiny_content/pgcr/raid_garden_of_salvation.jpg'
-      }
-    ]
-  })
+  data () {
+    return {
+      raids: {}
+    }
+  },
+  mounted: function () {
+    this.getRaids()
+  },
+  methods: {
+    getRaids: function () {
+      // gets the raids
+      this.$http.get(this.serverAddress + 'raids').then((response) => {
+        this.raids = response.data
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  .text { font-family: neue-haas-grotesk-display, sans-serif; }
+.text {
+  font-family: neue-haas-grotesk-display, sans-serif;
+}
 
 #cards {
   display: inline-grid;

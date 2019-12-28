@@ -12,18 +12,20 @@ class Raids(db.Model):
     image = db.Column(db.String)
     phases = db.Column(db.String)
 
-    def __init__(self, id, name, image, phases):
-        self.id = id
+    def __init__(self, name, image, phases):
         self.name = name
         self.image = image
         self.phases = phases
+
 
 class RaidsSchema(ma.Schema):
     class Meta:
         fields = ('id', 'name', 'image', 'phases')
 
+
 raidSchema = RaidsSchema()
 raidsSchema = RaidsSchema(many=True)
+
 
 @app.route('/raids', methods=['GET'])
 def getRaids():
@@ -31,7 +33,22 @@ def getRaids():
     result = raidsSchema.dump(allRaids)
     return jsonify(result)
 
+
 @app.route('/raids/<id>', methods=['GET'])
 def getRaid(id):
     raid = Raids.query.get(id)
     return raidSchema.jsonify(raid)
+
+
+@app.route('/raids', methods=['POST'])
+def addRaid():
+    name = request.json['name']
+    image = request.json['image']
+    phases = request.json['phases']
+
+    newRaid = Raids(name, image, phases)
+
+    db.session.add(newRaid)
+    db.session.commit()
+
+    return raidSchema.jsonify(newRaid)
