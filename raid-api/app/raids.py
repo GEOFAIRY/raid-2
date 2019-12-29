@@ -1,6 +1,7 @@
 from app import app, db, ma
 import os
 
+
 from flask import Flask, jsonify, request
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
@@ -38,17 +39,3 @@ def getRaids():
 def getRaid(id):
     raid = Raids.query.get(id)
     return raidSchema.jsonify(raid)
-
-
-@app.route('/raids', methods=['POST'])
-def addRaid():
-    name = request.json['name']
-    image = request.json['image']
-    phases = request.json['phases']
-
-    newRaid = Raids(name, image, phases)
-
-    db.session.add(newRaid)
-    db.session.commit()
-
-    return raidSchema.jsonify(newRaid)

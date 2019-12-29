@@ -12,6 +12,8 @@ flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 flask-cors = "*"
+passlib = "*"
+validate-email = "*"
 
 [requires]
 python_version = "3.7"

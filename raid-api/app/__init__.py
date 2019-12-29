@@ -16,3 +16,4 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 from app import raids
+from app import users
