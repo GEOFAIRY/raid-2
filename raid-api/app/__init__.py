@@ -4,6 +4,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from flask_httpauth import HTTPBasicAuth
+
+auth = HTTPBasicAuth()
 
 #init the rest api
 app = Flask(__name__)
@@ -13,7 +16,7 @@ CORS(app)
 baseDir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(baseDir, 'db.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_pyfile(os.path.join(baseDir, 'config.cfg'), silent=True)
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)

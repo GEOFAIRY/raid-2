@@ -1,13 +1,19 @@
-from app import app, db, ma
+from app import app, db, ma, auth
 import os
-from app.helpers import passwords, emails
+from app.helpers import emails
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, g
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import exc
 
+from passlib.hash import sha256_crypt
+from itsdangerous import (TimedJSONWebSignatureSerializer
+                          as Serializer, BadSignature, SignatureExpired)
+
 """User information handler"""
+
+
 
 class Users(db.Model):
     """
@@ -29,10 +35,31 @@ class Users(db.Model):
 
     def __init__(self, steamId, password, displayName, email):
         self.steamId = steamId
-        self.password = password
+        self.password = self.encrypt(password)
         self.displayName = displayName
         self.email = email
 
+    def encrypt(self, password):
+        return sha256_crypt.encrypt(password)
+
+    def verify(self, password):
+        return sha256_crypt.verify(password, self.password)
+
+    def generate_auth_token(self, expiration = 600):
+        s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
+        return s.dumps({ 'id': self.id })
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None # valid token, but expired
+        except BadSignature:
+            return None # invalid token
+        user = Users.query.get(data['id'])
+        return user
 
 class UsersSchema(ma.Schema):
     """class for parsing user data"""
@@ -98,14 +125,18 @@ def addUser():
     }
     """
     steamId = request.json['steamId']
-    password = passwords.encrypt(request.json['password'])
+    password = request.json['password']
     displayName = request.json['displayName']
     email = request.json['email']
 
     #validate email
     if (not emails.emailValid(email)):
+        print("email 1")
         return "Email Invalid", 400
-    
+    if email is None or password is None:
+        print("email or password")
+        return "Missing args", 400 # missing arguments
+
     new_user = Users(steamId, password, displayName, email)
 
     #commit user to database
@@ -115,6 +146,28 @@ def addUser():
     except exc.OperationalError:
         return "Database error", 500
     except exc.IntegrityError:
+        print("here")
         return "Steam ID or Email already registered", 400
 
+    print("end")
     return { "id": new_user.id }
+
+
+@auth.verify_password
+def verify_password(email_or_token, password):
+    # first try to authenticate by token
+    user = Users.verify_auth_token(email_or_token)
+    if not user:
+        # try to authenticate with email/password
+        user = Users.query.filter_by(email = email_or_token).first()
+        if not user or not user.verify(password):
+            return False
+    g.user = user
+    return True
+
+
+@app.route('/token')
+@auth.login_required
+def get_auth_token():
+    token = g.user.generate_auth_token()
+    return jsonify({ 'token': token.decode('ascii') })

@@ -15,3 +15,4 @@ raid-api/__pycache__
 raid-api/Pipfile.lock
 raid-api/db.sqlite
 raid-api/app/__pycache__/
+raid-api/config.cfg
