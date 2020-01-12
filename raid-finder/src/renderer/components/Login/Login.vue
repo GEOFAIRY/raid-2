@@ -1,65 +1,21 @@
 <template>
   <div id="login">
-    <form class="login" v-if="currentFrame === 'Login'">
-      <h1>Welcome</h1>
-      <input
-        id="email"
-        type="text"
-        name=""
-        placeholder="Email"
-        v-model="email"
-      />
-      <input
-        id="password"
-        type="password"
-        name=""
-        placeholder="Password"
-        v-model="password"
-      />
+    <form class="login">
+      <h1 v-if="currentFrame === 'Register'">Register</h1>
+      <h1 v-if="currentFrame === 'Login'">Welcome</h1>
+      <input id="email" type="text" name="" placeholder="Email" v-model="email"/>
+      <input id="steamId" type="text" name="" placeholder="Steam Id" v-model="steamId" v-if="currentFrame === 'Register'"/>
+      <input id="displayName" type="text" name="" placeholder="Display Name" v-model="displayName" v-if="currentFrame === 'Register'"/>
+      <input id="password" type="password" name="" placeholder="Password" v-model="password"/>
       <p id="infoText" v-show="infoToggle">{{ this.infoText }}</p>
-      <button type="submit" id="loginBtn" v-on:click="loginUser()">
+      <button type="submit" id="loginBtn" v-on:click="loginUser()" v-if="currentFrame === 'Login'">
         Login
       </button>
-      <button type="button" id="registerBtn" v-on:click="swapFrame()">
+      <button type="submit" id="loginBtn" v-on:click="registerUser()" v-if="currentFrame === 'Register'">
         Register
       </button>
-    </form>
-    <form class="login" v-if="currentFrame === 'Register'">
-      <h1>Register</h1>
-      <input
-        id="email"
-        type="text"
-        name=""
-        placeholder="Email"
-        v-model="email"
-      />
-      <input
-        id="steamId"
-        type="text"
-        name=""
-        placeholder="Steam Id"
-        v-model="steamId"
-      />
-      <input
-        id="displayName"
-        type="text"
-        name=""
-        placeholder="Display Name"
-        v-model="displayName"
-      />
-      <input
-        id="password"
-        type="password"
-        name=""
-        placeholder="Password"
-        v-model="password"
-      />
-      <p id="infoText" v-show="infoToggle">{{ this.infoText }}</p>
-      <button type="submit" id="loginBtn" v-on:click="registerUser()">
-        Register
-      </button>
-      <button type="button" id="registerBtn" v-on:click="swapFrame()">
-        Existing User
+      <button type="button" id="loginRegisterSwapBtn" v-on:click="swapFrame()">
+        {{ this.loginRegisterSwapBtnText }}
       </button>
     </form>
   </div>
@@ -73,6 +29,7 @@ export default {
       currentFrame: 'Login',
       infoToggle: false,
       infoText: '',
+      loginRegisterSwapBtnText: 'Register',
       email: '',
       password: '',
       displayName: '',
@@ -84,8 +41,10 @@ export default {
     swapFrame: function () {
       if (this.currentFrame === 'Login') {
         this.currentFrame = 'Register'
+        this.loginRegisterSwapBtnText = 'Existing User'
       } else {
         this.currentFrame = 'Login'
+        this.loginRegisterSwapBtnText = 'Register'
         document.getElementById('displayName').style.borderColor = '#3498db'
         document.getElementById('steamId').style.borderColor = '#3498db'
       }
@@ -95,6 +54,8 @@ export default {
 
       this.email = ''
       this.password = ''
+      this.displayName = ''
+      this.steamId = ''
     },
     login: function (email, password) {
       this.$http
@@ -281,11 +242,15 @@ body {
   border-color: #2ecc71;
   font-family: neue-haas-grotesk-display, sans-serif;
 }
-#registerBtn {
+#loginRegisterSwapBtn {
   border: 2px solid #fd7c03;
 }
-#registerBtn:hover {
+#loginRegisterSwapBtn:hover {
   background: #fd7c03;
+}
+#loginRegisterSwapBtn:disabled {
+  background: gray;
+  border: 2px solid gray;
 }
 .login button {
   background: none;
@@ -305,10 +270,6 @@ body {
   background: #2ecc71;
 }
 .login button:disabled {
-  background: gray;
-  border: 2px solid gray;
-}
-#registerBtn:disabled {
   background: gray;
   border: 2px solid gray;
 }
