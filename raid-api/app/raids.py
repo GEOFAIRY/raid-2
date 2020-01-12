@@ -51,4 +51,6 @@ def getRaids():
 def getRaid(id):
     """endpoint to return a single raids data"""
     raid = Raids.query.get(id)
+    if raid == None:
+        return "raid not found", 404
     return raidSchema.jsonify(raid)

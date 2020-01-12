@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info:
+  description: This is a simple API for the destiny 2 raid api
+  version: "1.0.0-oas3"
+  title: Simple raid lfg API
+  contact:
+    email: kyrans19@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: User
+    description: User model calls
+  - name: Raid
+    description: Raid Model calls
+paths:
+  /raids:
+    get:
+      tags:
+        - Raid
+      summary: Return all raids
+      operationId: getRaids
+      description: Return all raids and details
+      responses:
+        '200':
+          description: All raid data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Raid'
+  '/raids/{id}':
+    get:
+      tags:
+        - Raid
+      summary: Return a single raids info
+      operationId: getRaid
+      description: Return a raid and all its data
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Raid id to lookup
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Raid data returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Raid'
+        '404':
+          description: Raid id not found
+  /users:
+    get:
+      tags:
+        - User
+      summary: return users that match parameters or returns all users
+      operationId: getUsers
+      description: >-
+        return users that match given parameters or returns all users if no
+        parameters
+      parameters:
+        - in: query
+          name: id
+          description: The user id to search
+          schema:
+            type: integer
+        - in: query
+          name: steamId
+          description: The steam id to search
+          schema:
+            type: string
+        - in: query
+          name: displayName
+          description: The display name to search
+          schema:
+            type: string
+        - in: query
+          name: email
+          description: The email to search
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: User data returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserGet'
+    post:
+      tags:
+        - User
+      summary: registers a new user
+      operationId: addUser
+      description: registers a new user
+      responses:
+        '201':
+          description: new user id created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+                    example: 99
+        '400':
+          description: >-
+            email invaild<br>OR<br>missing args<br>OR<br>user already
+            exists<br>(put simply your params suck. git gud.)
+        '500':
+          description: database error most likely
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPost'
+        description: User to register
+  /token:
+    get:
+      tags:
+        - User
+      summary: gets a token
+      operationId: getToken
+      description: gets a token for a user with a given httpAUTH combo
+      security:
+        - basicAuth: []
+      responses:
+        '201':
+          description: new token associated with the user info given
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                    example: >-
+                      a really really long string that we make and u should not
+                      try decrypt thanks
+        '401':
+          description: Unauthorized
+servers:
+  - url: 'http://localhost:5000'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Raid:
+      type: object
+      required:
+        - id
+        - name
+        - image
+        - phases
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Leviathan
+        image:
+          type: string
+          format: url
+          example: 'https://path.to/raid/image'
+        phases:
+          type: string
+          example: 'phase 1, phase 2, phase 3'
+    UserGet:
+      type: object
+      required:
+        - displayName
+        - id
+        - steamId
+      properties:
+        displayName:
+          type: string
+          example: CoolDisplayName
+        id:
+          type: integer
+          example: 99
+        steamId:
+          type: string
+          example: 738499288329201200
+    UserPost:
+      type: object
+      required:
+        - steamId
+        - password
+        - displayName
+        - email
+      properties:
+        steamId:
+          type: string
+          example: 738499288329201200
+        password:
+          type: string
+          example: supersecretpassword
+        displayName:
+          type: string
+          example: CoolDisplayName
+        email:
+          type: string
+          format: email
+          example: example@email.com

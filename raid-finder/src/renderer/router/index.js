@@ -7,6 +7,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'login',
+      component: require('@/components/Login/Login').default
+    },
+    {
+      path: '/raids',
       name: 'raid-selector',
       component: require('@/components/RaidSelector/RaidSelector').default
     },

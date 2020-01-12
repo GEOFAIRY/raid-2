@@ -102,10 +102,8 @@ def getUser():
     result = usersSchema.dump(allUsers)
 
     #format json to return
-    if (len(result) == 1):
-        del result[0]["password"]
-        del result[0]["email"]
-        return jsonify(result[0])
+    if len(result) == 0:
+        return "Users not found", 404
     for i in result:
         del i["password"]
         del i["email"]
@@ -150,7 +148,7 @@ def addUser():
         return "Steam ID or Email already registered", 400
 
     print("end")
-    return { "id": new_user.id }
+    return { "id": new_user.id }, 201
 
 
 @auth.verify_password
@@ -170,4 +168,4 @@ def verify_password(email_or_token, password):
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({ 'token': token.decode('ascii') })
+    return jsonify({ 'token': token.decode('ascii') }), 201
