@@ -1,17 +1,53 @@
 <template>
   <div id="login">
     <form class="login">
-      <h1 v-if="currentFrame === 'Register'">Register</h1>
-      <h1 v-if="currentFrame === 'Login'">Welcome</h1>
-      <input id="email" type="text" name="" placeholder="Email" v-model="email"/>
-      <input id="steamId" type="text" name="" placeholder="Steam Id" v-model="steamId" v-if="currentFrame === 'Register'"/>
-      <input id="displayName" type="text" name="" placeholder="Display Name" v-model="displayName" v-if="currentFrame === 'Register'"/>
-      <input id="password" type="password" name="" placeholder="Password" v-model="password"/>
+      <h1 v-if="registerShown === true">Register</h1>
+      <h1 v-if="registerShown === false">Welcome</h1>
+      <input
+        id="email"
+        type="text"
+        name=""
+        placeholder="Email"
+        v-model="email"
+      />
+      <input
+        id="steamId"
+        type="text"
+        name=""
+        placeholder="Steam Id"
+        v-model="steamId"
+        v-if="registerShown === true"
+      />
+      <input
+        id="displayName"
+        type="text"
+        name=""
+        placeholder="Display Name"
+        v-model="displayName"
+        v-if="registerShown === true"
+      />
+      <input
+        id="password"
+        type="password"
+        name=""
+        placeholder="Password"
+        v-model="password"
+      />
       <p id="infoText" v-show="infoToggle">{{ this.infoText }}</p>
-      <button type="submit" id="loginBtn" v-on:click="loginUser()" v-if="currentFrame === 'Login'">
+      <button
+        type="submit"
+        id="loginBtn"
+        v-on:click="loginUser()"
+        v-if="registerShown === false"
+      >
         Login
       </button>
-      <button type="submit" id="loginBtn" v-on:click="registerUser()" v-if="currentFrame === 'Register'">
+      <button
+        type="submit"
+        id="loginBtn"
+        v-on:click="registerUser()"
+        v-if="registerShown === true"
+      >
         Register
       </button>
       <button type="button" id="loginRegisterSwapBtn" v-on:click="swapFrame()">
@@ -24,31 +60,34 @@
 <script>
 export default {
   name: 'login',
-  data () {
+  data() {
     return {
-      currentFrame: 'Login',
-      infoToggle: false,
-      infoText: '',
-      loginRegisterSwapBtnText: 'Register',
+      registerShown: false, //  if registration elements are shown
+      infoToggle: false, //  if the info element is shown
+      infoText: '', //  text of the info element
+      loginRegisterSwapBtnText: 'Register', //  text of respetive button
+      //  entered user infomation
       email: '',
       password: '',
       displayName: '',
       steamId: ''
     }
   },
-  mounted: function () {},
   methods: {
-    swapFrame: function () {
-      if (this.currentFrame === 'Login') {
-        this.currentFrame = 'Register'
+    swapFrame: function() {
+      //  method to change to and from registration and login frames
+      if (this.registerShown === false) {
+        this.registerShown = true
         this.loginRegisterSwapBtnText = 'Existing User'
       } else {
-        this.currentFrame = 'Login'
+        this.registerShown = false
         this.loginRegisterSwapBtnText = 'Register'
         document.getElementById('displayName').style.borderColor = '#3498db'
         document.getElementById('steamId').style.borderColor = '#3498db'
       }
-      this.infoToggle = false
+
+      this.infoTextUpdate(null, null)
+
       document.getElementById('email').style.borderColor = '#3498db'
       document.getElementById('password').style.borderColor = '#3498db'
 
@@ -57,7 +96,9 @@ export default {
       this.displayName = ''
       this.steamId = ''
     },
-    login: function (email, password) {
+
+    login: function(email, password) {
+      // method to contact token endpoint and get a user token
       this.$http
         .get(this.serverAddress + 'token', {
           auth: {username: email, password: password}
@@ -69,125 +110,129 @@ export default {
           },
           (error) => {
             if (error.response.status === 403) {
-              this.infoText = 'Email/Password not recognised'
+              // user doesnt exist
+              this.infoTextUpdate(true, 'Email/Password not recognised')
             } else {
-              this.infoText = error.response.data
+              // other error
+              this.infoTextUpdate(true, error.response.data)
             }
-            this.infoToggle = true
-            document.getElementById('infoText').style.color = 'red'
-            let buttons = document.getElementsByTagName('button')
-            for (let i = 0; i < buttons.length; i++) {
-              buttons[i].disabled = false
-            }
+            this.updateButtonState(false)
           }
         )
     },
-    loginUser: function () {
-      let buttons = document.getElementsByTagName('button')
-      for (let i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = true
-      }
 
-      this.infoToggle = false
+    loginUser: function() {
+      // method to check login inputs and prepare for successful or failed get token request
+      this.updateButtonState(true)
+      this.infoTextUpdate(null, null)
+
       document.getElementById('email').style.borderColor = '#3498db'
       document.getElementById('password').style.borderColor = '#3498db'
+
       if (this.email === '') {
-        this.infoToggle = true
-        this.infoText = 'All fields required'
+        // missing email
+        this.infoTextUpdate(true, 'All fields required')
         document.getElementById('email').style.borderColor = 'red'
-        document.getElementById('infoText').style.color = 'red'
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].disabled = false
-        }
+        this.updateButtonState(false)
       }
       if (this.password === '') {
-        this.infoToggle = true
-        this.infoText = 'All fields required'
+        // missing password
+        this.infoTextUpdate(true, 'All fields required')
         document.getElementById('password').style.borderColor = 'red'
-        document.getElementById('infoText').style.color = 'red'
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].disabled = false
-        }
+        this.updateButtonState(false)
       }
       if (!this.infoToggle) {
+        // passed client validation
         this.login(this.email, this.password)
       }
     },
-    registerUser: function () {
-      let buttons = document.getElementsByTagName('button')
-      for (let i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = true
-      }
 
-      this.infoToggle = false
+    registerUser: function() {
+      // method to check registration inputs and prepare for successful or failed post users request
+      this.updateButtonState(true)
+      this.infoTextUpdate(null, null)
       document.getElementById('email').style.borderColor = '#3498db'
       document.getElementById('password').style.borderColor = '#3498db'
       document.getElementById('displayName').style.borderColor = '#3498db'
       document.getElementById('steamId').style.borderColor = '#3498db'
 
       if (this.email === '') {
-        this.infoToggle = true
-        this.infoText = 'All fields required'
+        // missing email
+        this.infoTextUpdate(true, 'All fields required')
         document.getElementById('email').style.borderColor = 'red'
-        document.getElementById('infoText').style.color = 'red'
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].disabled = false
-        }
+        this.updateButtonState(false)
       }
       if (this.password === '') {
-        this.infoToggle = true
-        this.infoText = 'All fields required'
+        // missing password
+        this.infoTextUpdate(true, 'All fields required')
         document.getElementById('password').style.borderColor = 'red'
-        document.getElementById('infoText').style.color = 'red'
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].disabled = false
-        }
+        this.updateButtonState(false)
       }
       if (this.displayName === '') {
-        this.infoToggle = true
-        this.infoText = 'All fields required'
+        // missing displayName
+        this.infoTextUpdate(true, 'All fields required')
         document.getElementById('displayName').style.borderColor = 'red'
-        document.getElementById('infoText').style.color = 'red'
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].disabled = false
-        }
+        this.updateButtonState(false)
       }
       if (this.steamId === '') {
-        this.infoToggle = true
-        this.infoText = 'All fields required'
+        // missing steamId
+        this.infoTextUpdate(true, 'All fields required')
         document.getElementById('steamId').style.borderColor = 'red'
-        document.getElementById('infoText').style.color = 'red'
-        for (let i = 0; i < buttons.length; i++) {
-          buttons[i].disabled = false
-        }
+        this.updateButtonState(false)
       }
       if (!this.infoToggle) {
-        this.$http
-          .post(this.serverAddress + 'users', {
-            steamId: this.steamId,
-            password: this.password,
-            displayName: this.displayName,
-            email: this.email
-          })
-          .then(
-            () => {
-              this.swapFrame()
-              this.infoText = 'Successfully registered! Please login'
-              this.infoToggle = true
-              document.getElementById('infoText').style.color = 'lime'
-              for (let i = 0; i < buttons.length; i++) {
-                buttons[i].disabled = false
-              }
-            },
-            (error) => {
-              this.infoText = error.response.data
-              this.infoToggle = true
-              document.getElementById('infoText').style.color = 'red'
-              for (let i = 0; i < buttons.length; i++) {
-                buttons[i].disabled = false
-              }
-            }
-          )
+        // passed client validation
+        this.register(this.steamId, this.password, this.displayName, this.email)
+      }
+    },
+
+    register: function(steamId, password, displayName, email) {
+      // method to contact user endpoint to post a new user
+      this.$http
+        .post(this.serverAddress + 'users', {
+          steamId: this.steamId,
+          password: this.password,
+          displayName: this.displayName,
+          email: this.email
+        })
+        .then(
+          () => {
+            // success
+            this.swapFrame()
+            this.infoTextUpdate(false, 'Successfully registered! Please login')
+            this.updateButtonState(false)
+          },
+          (error) => {
+            // failed
+            this.infoTextUpdate(true, error.response.data)
+            this.updateButtonState(false)
+          }
+        )
+    },
+
+    infoTextUpdate: function(error, text) {
+      // method to handle info text updates
+      if (error === null) {
+        //  reset and remove infoText
+        this.infoToggle = false
+      } else if (error) {
+        //  serve info text as an error
+        document.getElementById('infoText').style.color = 'red'
+        this.infoText = text
+        this.infoToggle = true
+      } else if (!error) {
+        //  serve info text as info
+        this.infoText = text
+        this.infoToggle = true
+        document.getElementById('infoText').style.color = 'lime'
+      }
+    },
+
+    updateButtonState: function(disableState) {
+      // method to handle all button state changes
+      let buttons = document.getElementsByTagName('button')
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = disableState
       }
     }
   }
@@ -245,7 +290,8 @@ body {
 #loginRegisterSwapBtn {
   border: 2px solid #fd7c03;
 }
-#loginRegisterSwapBtn:hover {
+#loginRegisterSwapBtn:hover,
+#loginRegisterSwapBtn:focus {
   background: #fd7c03;
 }
 #loginRegisterSwapBtn:disabled {
@@ -266,7 +312,8 @@ body {
   cursor: pointer;
   font-family: neue-haas-grotesk-display, sans-serif;
 }
-.login button:hover {
+.login button:hover,
+button:focus {
   background: #2ecc71;
 }
 .login button:disabled {

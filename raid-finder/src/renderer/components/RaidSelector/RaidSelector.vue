@@ -8,26 +8,35 @@
         </h4>
       </div>
     </div>
+    <div id="logoutCard" v-on:click="logout()">
+      <img class="logout-image" src="~@/assets/logout.png" alt="Cannot find image"/>
+      <h4>Logout</h4>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'raid-selector',
-  data () {
+  data() {
     return {
       raids: {}
     }
   },
-  mounted: function () {
+  mounted: function() {
     this.getRaids()
   },
   methods: {
-    getRaids: function () {
+    getRaids: function() {
       // gets the raids
       this.$http.get(this.serverAddress + 'raids').then((response) => {
         this.raids = response.data
       })
+    },
+    logout: function() {
+      // logout current user
+      this.token = null
+      this.$router.push({name: 'login'})
     }
   }
 }
@@ -38,28 +47,47 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  
 }
 
 .text {
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
   font-family: neue-haas-grotesk-display, sans-serif;
 }
 
 #cards {
   display: inline-grid;
   grid-template-columns: auto auto auto;
+  font-family: sans-serif;
+  background: #191919;
+;
+}
+
+#logoutCard {
+  transition: 0.3s;
+  padding: 10px;
+  margin: 5px;
+  background: black;
+  width: 200px;
+  height: 150px;
+  text-align: center;
+  margin-top: 13%;
+  margin-left: 27%;
 }
 
 .card {
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2);
   transition: 0.3s;
   padding: 10px;
   width: 412px;
   margin: 5px;
+  background: black;
+  text-align: center;
 }
 
 /* On mouse-over, add a deeper shadow */
-.card:hover {
+.card:hover, #logoutCard:hover {
   box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -73,5 +101,11 @@ export default {
   height: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+.logout-image {
+  width: 75px;
+  height: 75px;
+  margin-top: 10%;
 }
 </style>
