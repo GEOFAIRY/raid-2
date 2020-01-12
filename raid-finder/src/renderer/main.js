@@ -7,12 +7,14 @@ import store from './store'
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
+
 Vue.config.productionTip = false
 
 Vue.mixin({
   data: function () {
     return {
-      serverAddress: 'http://127.0.0.1:5000/'
+      serverAddress: 'http://127.0.0.1:5000/',
+      token: null
     }
   }
 })
