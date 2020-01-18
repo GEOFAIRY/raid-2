@@ -11,6 +11,8 @@ from passlib.hash import sha256_crypt
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
+import datetime
+
 """User information handler"""
 
 
@@ -30,6 +32,7 @@ class Users(db.Model):
     password = db.Column(db.String, nullable=False)
     displayName = db.Column(db.String, nullable=False)
     email = db.Column(db.String, unique=True)
+    timeCreated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 
 
@@ -64,7 +67,7 @@ class Users(db.Model):
 class UsersSchema(ma.Schema):
     """class for parsing user data"""
     class Meta:
-        fields = ('id', 'steamId', 'password', 'displayName', 'email')
+        fields = ('id', 'steamId', 'password', 'displayName', 'email', 'timeCreated')
 
 
 #init schemas
@@ -144,10 +147,8 @@ def addUser():
     except exc.OperationalError:
         return "Database error", 500
     except exc.IntegrityError:
-        print("here")
         return "Steam ID or Email already registered", 400
 
-    print("end")
     return { "id": new_user.id }, 201
 
 
