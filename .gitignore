@@ -21,3 +21,4 @@ raid-api-restruct/app/resource/config.cfg
 raid-api-restruct/.vscode
 raid-api-restruct/app/resource/database/db.sqlite
 raid-api-restruct/Pipfile.lock
+raid-api-restruct/.idea/
