@@ -1,13 +1,7 @@
-from app import app, db, ma
-from app.main.model import *
-import os
-
-
-from flask import Flask, jsonify, request
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
+from app import db, ma
 
 """Phase information handler"""
+
 
 class Phase(db.Model):
     """
@@ -19,7 +13,7 @@ class Phase(db.Model):
         name - the raid name Str()
     """
     id = db.Column(db.Integer, primary_key=True)
-    raidId = db.Column(db.Integer, db.ForeignKey('Raid.id'))
+    raidId = db.Column(db.Integer, db.ForeignKey('raid.id'))
     order = db.Column(db.Integer)
     name = db.Column(db.String)
 
@@ -31,10 +25,11 @@ class Phase(db.Model):
 
 class RaidSchema(ma.Schema):
     """class for parsing raid data correctly"""
+
     class Meta:
         fields = ('id', 'name', 'image')
 
 
-#init schemas
+# init schemas
 raidSchema = RaidSchema()
 raidsSchema = RaidSchema(many=True)

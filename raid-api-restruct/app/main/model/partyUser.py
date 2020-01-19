@@ -1,12 +1,5 @@
-from app import app, db, ma
-from app.main.model import *
-import os
+from app import db, ma
 
-from flask import Flask, jsonify, request, g
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
-
-import datetime
 
 """PartyUser information handler"""
 
@@ -22,8 +15,8 @@ class PartyUser(db.Model):
         status - the current party status Str()
     """
     id = db.Column(db.Integer, primary_key=True)
-    partyId = db.Column(db.Integer, db.ForeignKey('Party.id'))
-    userId = db.Column(db.Integer, db.ForeignKey('User.id'))
+    partyId = db.Column(db.Integer, db.ForeignKey('party.id'))
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
     leader = db.Column(db.Boolean)
     status = db.Column(db.String)
 

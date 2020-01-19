@@ -4,11 +4,9 @@ CREATE TABLE IF NOT EXISTS "game" (
 	"id"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	"raidId"	INTEGER,
 	"partyId"	INTEGER,
-	"currentPhaseId"	INTEGER,
 	"status"	TEXT,
 	"timeCreated"	DATETIME,
 	FOREIGN KEY("raidId") REFERENCES "raid"("id"),
-	FOREIGN KEY("currentPhaseId") REFERENCES "phase"("id"),
 	FOREIGN KEY("partyId") REFERENCES "party"("id")
 );
 DROP TABLE IF EXISTS "phase";
