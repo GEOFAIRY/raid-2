@@ -1,10 +1,4 @@
-from app import app, db, ma
-from app.main.model import *
-import os
-
-from flask import Flask, jsonify, request, g
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
+from app import db, ma
 
 import datetime
 
@@ -26,14 +20,14 @@ class Party(db.Model):
     game = db.relationship('Game', backref='party', lazy=True)
     partyUser = db.relationship('PartyUser', backref='party', lazy=True)
 
-
     def __init__(self, raidId, sherpa):
         self.raidId = raidId
         self.sherpa = sherpa
 
 
 class PartySchema(ma.Schema):
-    """class for parsng party data"""
+    """class for parsing party data"""
+
     class Meta:
         fields = ('partyId', 'sherpa', 'timeCreated')
 

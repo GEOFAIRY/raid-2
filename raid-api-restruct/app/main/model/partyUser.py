@@ -1,12 +1,5 @@
-from app import app, db, ma
-from app.main.model import *
-import os
+from app import db, ma
 
-from flask import Flask, jsonify, request, g
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
-
-import datetime
 
 """PartyUser information handler"""
 

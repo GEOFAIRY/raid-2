@@ -1,13 +1,7 @@
-from app import app, db, ma
-from app.main.model import *
-import os
-
-
-from flask import Flask, jsonify, request
-from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy
+from app import db, ma
 
 """Raid information handler"""
+
 
 class Raid(db.Model):
     """
@@ -38,3 +32,5 @@ class RaidSchema(ma.Schema):
 #init schemas
 raidSchema = RaidSchema()
 raidsSchema = RaidSchema(many=True)
+
+import app.main.view.raid
