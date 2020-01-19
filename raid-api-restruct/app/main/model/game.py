@@ -13,9 +13,9 @@ class Game(db.Model):
 
     """
     id = db.Column(db.Integer, primary_key=True)
-    raidId = db.Column(db.Integer, db.ForeignKey('Raid.id'))
-    partyId = db.Column(db.Integer, db.ForeignKey('Party.id'))
+    raidId = db.Column(db.Integer, db.ForeignKey('raid.id'))
     status = db.Column(db.String)
+    partyId = db.Column(db.Integer, db.ForeignKey('party.id'))
     timeCreated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 

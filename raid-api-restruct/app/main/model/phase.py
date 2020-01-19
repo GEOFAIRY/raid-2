@@ -13,7 +13,7 @@ class Phase(db.Model):
         name - the raid name Str()
     """
     id = db.Column(db.Integer, primary_key=True)
-    raidId = db.Column(db.Integer, db.ForeignKey('Raid.id'))
+    raidId = db.Column(db.Integer, db.ForeignKey('raid.id'))
     order = db.Column(db.Integer)
     name = db.Column(db.String)
 

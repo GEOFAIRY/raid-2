@@ -13,7 +13,7 @@ class Party(db.Model):
         sherpa - if the raid is a sherpa raid Bool()
         timeCreated - the time created DateTime()
     """
-    partyId = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     sherpa = db.Column(db.Boolean, nullable=False)
     timeCreated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
