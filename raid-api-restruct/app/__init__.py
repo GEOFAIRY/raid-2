@@ -26,9 +26,9 @@ logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 # init endpoints
-from app.main.view import party
-from app.main.view import game
-from app.main.view import partyUser
-from app.main.view import phase
-from app.main.view import raid
-from app.main.view import user
+from app.main.view import party_view
+from app.main.view import game_view
+from app.main.view import party_user_view
+from app.main.view import phase_view
+from app.main.view import raid_view
+from app.main.view import user_view

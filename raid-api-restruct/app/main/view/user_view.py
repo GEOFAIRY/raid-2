@@ -1,8 +1,8 @@
 from flask import jsonify
 
 from app import app
-from app.main.model.user import User as UserModel
-import user_controller
+from app.main.model import user
+from app.main.controller import user_controller
 
 
 
@@ -19,7 +19,7 @@ def getUser(request):
         - email
     """
 	return user_controller.getUser(request)
-    
+
 
 
 @app.route('/users', methods=['POST'])
@@ -49,4 +49,4 @@ def get_auth_token():
 	ApiNote:
 		GET /token
 	"""
-    return UserController.get_auth_token()
+    return user_controller.get_auth_token()

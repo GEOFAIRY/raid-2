@@ -1,8 +1,8 @@
 from flask import jsonify
 
 from app import app
-from app.main.model.phase import Phase as PhaseModel
-import phase_controller
+from app.main.model import phase
+from app.main.controller import phase_controller
 
 
 @app.route('/phase', methods=['POST'])
