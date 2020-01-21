@@ -1,8 +1,8 @@
 from flask import jsonify
 
 from app import app
-from app.main.model.party import Party as PartyModel
-import party_controller
+from app.main.model import party
+from app.main.controller import party_controller
 
 
 @app.route('/party', methods=['POST'])

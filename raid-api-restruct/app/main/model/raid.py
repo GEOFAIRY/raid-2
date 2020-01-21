@@ -32,5 +32,3 @@ class RaidSchema(ma.Schema):
 #init schemas
 raidSchema = RaidSchema()
 raidsSchema = RaidSchema(many=True)
-
-import app.main.view.raid

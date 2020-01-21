@@ -1,8 +1,7 @@
 from flask import jsonify
 
 from app import app
-from app.main.model.raid import Raid as RaidModel
-import raid_controller
+from app.main.controller import raid_controller
 
 
 
@@ -12,7 +11,7 @@ def getRaids():
 	ApiNote:
 			GET /raids
 	Returns
-		Json list of all current raids. 
+		Json list of all current raids.
 	"""
     return RaidsController.getAllRaids()
 
