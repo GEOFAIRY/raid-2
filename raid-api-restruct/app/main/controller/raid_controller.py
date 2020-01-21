@@ -6,6 +6,7 @@ from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 
 from app.main.model.raid import *
+from app.main.model.phase import phasesSchema
 
 
 def getAllRaids():
@@ -28,3 +29,17 @@ def getRaidById(id):
     if raidSearched == None:
         return "raid not found", 404
     return raidSchema.jsonify(raidSearched)
+
+
+def getPhasesByRaidId(raidId):
+    """
+	Controller method to get a single raids phases with a given id.
+
+	Args:
+		raidId: Id of the raid phases to be found
+	"""
+    raidSearched = Raids.query.get(raidId)
+    if raidSearched = None:
+        return "raid not found", 404
+    result = phasesSchema.dump(raidSearched.phases)
+    return jsonify(result)

@@ -1,24 +1,8 @@
 from flask import jsonify
 
 from app import app
-from app.main.model import phase
 from app.main.controller import phase_controller
 
-
-@app.route('/phase', methods=['POST'])
-def createPhase(request):
-    """
-    endpoint to create a new phase from a submitted json request
-    required input:
-    {
-        "raidId": raidId
-		"order": order
-		"name": name
-    }
-	ApiNote:
-		POST /phase
-    """
-    return phase_controller.createPhase(request)
 
 @app.route('/phase/<id>', methods=['GET'])
 def getPhase(id):

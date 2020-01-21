@@ -23,13 +23,13 @@ class Phase(db.Model):
         self.name = name
 
 
-class RaidSchema(ma.Schema):
-    """class for parsing raid data correctly"""
+class PhaseSchema(ma.Schema):
+    """class for parsing phase data correctly"""
 
     class Meta:
-        fields = ('id', 'name', 'image')
+        fields = ('id', 'raidId', 'order', 'name')
 
 
 # init schemas
-raidSchema = RaidSchema()
-raidsSchema = RaidSchema(many=True)
+phaseSchema = PhaseSchema()
+phasesSchema = PhaseSchema(many=True)
