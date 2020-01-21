@@ -1,7 +1,6 @@
 from flask import jsonify
 
 from app import app
-from app.main.model import user
 from app.main.controller import user_controller
 
 

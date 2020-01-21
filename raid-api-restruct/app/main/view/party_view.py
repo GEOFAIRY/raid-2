@@ -1,8 +1,7 @@
 from flask import jsonify
 
 from app import app
-from app.main.model import party
-from app.main.controller import party_controller
+from app.main.controller import party_user_controller
 
 
 @app.route('/party', methods=['POST'])
@@ -19,7 +18,7 @@ def createParty(request):
     return party_controller.createParty(request)
 
 @app.route('/party/<id>', methods=['GET'])
-def getGame(id):
+def getParty(id):
     """endpoint to return a single party data
 	ApiNote:
 			GET /party/:id

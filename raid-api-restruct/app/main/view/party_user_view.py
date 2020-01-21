@@ -1,7 +1,6 @@
 from flask import jsonify
 
 from app import app
-from app.main.model import party_user
 from app.main.controller import party_user_controller
 
 

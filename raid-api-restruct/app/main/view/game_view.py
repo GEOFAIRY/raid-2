@@ -1,8 +1,7 @@
 from flask import jsonify
 
 from app import app
-from app.main.model import game
-from app.main.controller import game_controller
+from app.main.controller import raid_controller
 
 
 @app.route('/game', methods=['GET'])
@@ -10,7 +9,7 @@ def getGames():
     """
     endpoint to get all games
         ApiNote:
-                GET /users
+                GET /game
     """
     return game_controller.getGames()
 
