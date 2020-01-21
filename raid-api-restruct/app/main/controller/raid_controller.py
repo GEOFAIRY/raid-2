@@ -10,9 +10,9 @@ from app.main.model.phase import phasesSchema
 
 
 def getAllRaids():
-	"""
-	Controller method to get all currently available raids.
-	"""
+    """
+    Controller method to get all currently available raids.
+    """
     allRaids = Raid.query.all()
     result = raidsSchema.dump(allRaids)
     return jsonify(result)
@@ -20,12 +20,12 @@ def getAllRaids():
 
 def getRaidById(id):
     """
-	Controller method to get a single raid with given id.
+    Controller method to get a single raid with given id.
 
-	Args:
-		id: Id of the raid to be found.
-	"""
-    raidSearched = Raids.query.get(id)
+    Args:
+        id: Id of the raid to be found.
+    """
+    raidSearched = Raid.query.get(id)
     if raidSearched == None:
         return "raid not found", 404
     return raidSchema.jsonify(raidSearched)
@@ -33,13 +33,13 @@ def getRaidById(id):
 
 def getPhasesByRaidId(raidId):
     """
-	Controller method to get a single raids phases with a given id.
+    Controller method to get a single raids phases with a given id.
 
-	Args:
-		raidId: Id of the raid phases to be found
-	"""
-    raidSearched = Raids.query.get(raidId)
-    if raidSearched = None:
+    Args:
+        raidId: Id of the raid phases to be found
+    """
+    raidSearched = Raid.query.get(raidId)
+    if raidSearched == None:
         return "raid not found", 404
     result = phasesSchema.dump(raidSearched.phases)
     return jsonify(result)

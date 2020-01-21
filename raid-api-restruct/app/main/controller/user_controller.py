@@ -1,6 +1,5 @@
 from app import app, db, ma, auth
 import os
-from app.helpers import emails
 
 from flask import Flask, jsonify, request, g
 from flask_marshmallow import Marshmallow
@@ -12,6 +11,8 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
 import datetime
+
+from app.main.model.user import *
 
 
 def getUser(request):
@@ -68,7 +69,7 @@ def addUser(request):
     email = request.json['email']
 
     #validate email
-    if (not emails.emailValid(email)):
+    if (not User.emailValid(email)):
         print("email 1")
         return "Email Invalid", 400
     if email is None or password is None:

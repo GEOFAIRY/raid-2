@@ -29,7 +29,7 @@ def getRaid(raidId):
     return raid_controller.getRaidById(raidId)
 
 
-@app.route('/raids/<id>/phases', methods=['GET'])
+@app.route('/raids/<raidId>/phases', methods=['GET'])
 def getRaidPhases(raidId):
 	"""endpoint to return all phase data of a given raid
 	Apinote:

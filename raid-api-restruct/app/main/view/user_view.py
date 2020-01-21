@@ -1,6 +1,6 @@
 from flask import jsonify
 
-from app import app
+from app import app, auth
 from app.main.controller import user_controller
 
 
@@ -9,15 +9,15 @@ from app.main.controller import user_controller
 def getUser(request):
     """
     endpoint to get users with or without search params
-	ApiNote:
-		GET /users
+    ApiNote:
+        GET /users
     params:
         - id
         - steamId
         - displayName
         - email
     """
-	return user_controller.getUser(request)
+    return user_controller.getUser(request)
 
 
 
@@ -32,8 +32,8 @@ def addUser(request):
         "displayName": displayName
         "email": email
     }
-	ApiNote:
-		POST /users
+    ApiNote:
+        POST /users
     """
     return user_controller.addUser(request)
 
@@ -43,9 +43,9 @@ def addUser(request):
 @app.route('/token')
 @auth.login_required
 def get_auth_token():
-	"""
-	endpoint to create an auth token for a logged in user.
-	ApiNote:
-		GET /token
-	"""
+    """
+    endpoint to create an auth token for a logged in user.
+    ApiNote:
+        GET /token
+    """
     return user_controller.get_auth_token()

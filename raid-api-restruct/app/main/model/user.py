@@ -4,7 +4,11 @@ from passlib.hash import sha256_crypt
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
+from validate_email import validate_email
+
 import datetime
+
+from app.main.model.party_user import PartyUser
 
 """User information handler"""
 
@@ -27,7 +31,7 @@ class User(db.Model):
     email = db.Column(db.String, unique=True)
     timeCreated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    partyUser = db.relationship('PartyUser', backref='user', lazy=True)
+    partyUsers = db.relationship('PartyUser', backref='user', lazy=True)
 
     def __init__(self, steamId, password, displayName, email):
         self.steamId = steamId
@@ -44,6 +48,9 @@ class User(db.Model):
 
     def encrypt(self, password):
         return sha256_crypt.encrypt(password)
+
+    def emailValid(email):
+        return validate_email(email)
 
     @staticmethod
     def verify_auth_token(token):

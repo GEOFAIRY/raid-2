@@ -1,5 +1,8 @@
 from app import db, ma
 
+from app.main.model.game import Game
+from app.main.model.phase import Phase
+
 """Raid information handler"""
 
 

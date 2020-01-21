@@ -9,7 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 from app.main.model.party_user import *
 
 
-
 def addPartyUser(request):
     """
     method to add a new party user from a submitted json request
@@ -18,12 +17,12 @@ def addPartyUser(request):
         "partyId": partyId
         "userId": userId
         "status": status
-		"leader": leader
+                "leader": leader
     }
     """
     partyId = request.json['partyId']
     userId = request.json['userId']
     status = request.json['status']
-	leader = request.json['leader']
+    leader = request.json['leader']
 
     new_party_user = Game(partyId, userId, leader, status)

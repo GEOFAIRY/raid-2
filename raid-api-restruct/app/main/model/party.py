@@ -1,5 +1,8 @@
 from app import db, ma
 
+from app.main.model.game import Game
+from app.main.model.party_user import PartyUser
+
 import datetime
 
 """Party information handler"""
@@ -17,8 +20,8 @@ class Party(db.Model):
     sherpa = db.Column(db.Boolean, nullable=False)
     timeCreated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    game = db.relationship('Game', backref='party', lazy=True)
-    partyUser = db.relationship('PartyUser', backref='party', lazy=True)
+    games = db.relationship('Game', backref='party', lazy=True)
+    partyUsers = db.relationship('PartyUser', backref='party', lazy=True)
 
     def __init__(self, raidId, sherpa):
         self.raidId = raidId
