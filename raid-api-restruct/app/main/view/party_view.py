@@ -1,11 +1,12 @@
-from flask import jsonify
+from flask import Flask, jsonify, request, g
 
-from app import app
-from app.main.controller import party_user_controller
+from app import app, auth
+from app.main.controller import party_controller
 
 
 @app.route('/party', methods=['POST'])
-def createParty(request):
+@auth.login_required
+def createParty():
     """
     endpoint to create a new party from a submitted json request
     required input:
@@ -15,7 +16,14 @@ def createParty(request):
 	ApiNote:
 		POST /party
     """
-    return party_controller.createParty(request)
+    creatingUser = g.user
+    if request.json['sherpa'] == "True":
+        sherpa = True
+    else:
+        sherpa = False
+    status = "Waiting for Players"
+
+    return party_controller.createParty(creatingUser, sherpa, status)
 
 @app.route('/party/<id>', methods=['GET'])
 def getParty(id):

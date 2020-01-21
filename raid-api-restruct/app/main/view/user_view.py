@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request
 
 from app import app, auth
 from app.main.controller import user_controller
@@ -6,7 +6,7 @@ from app.main.controller import user_controller
 
 
 @app.route('/users', methods=['GET'])
-def getUser(request):
+def getUser():
     """
     endpoint to get users with or without search params
     ApiNote:
@@ -17,12 +17,17 @@ def getUser(request):
         - displayName
         - email
     """
-    return user_controller.getUser(request)
+    id = request.args.get('id', default = None, type = int)
+    steamId = request.args.get('steamId', default = None, type = str)
+    displayName = request.args.get('displayName', default = None, type = str)
+    email = request.args.get('email', default = None, type = str)
+
+    return user_controller.getUser(id, steamId, displayName, email)
 
 
 
 @app.route('/users', methods=['POST'])
-def addUser(request):
+def addUser():
     """
     endpoint to add a new user from a submitted json request
     required input:
@@ -35,7 +40,12 @@ def addUser(request):
     ApiNote:
         POST /users
     """
-    return user_controller.addUser(request)
+    steamId = request.json['steamId']
+    password = request.json['password']
+    displayName = request.json['displayName']
+    email = request.json['email']
+
+    return user_controller.addUser(steamId, password, displayName, email)
 
 
 

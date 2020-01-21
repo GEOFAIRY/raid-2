@@ -23,8 +23,7 @@ class Party(db.Model):
     games = db.relationship('Game', backref='party', lazy=True)
     partyUsers = db.relationship('PartyUser', backref='party', lazy=True)
 
-    def __init__(self, raidId, sherpa):
-        self.raidId = raidId
+    def __init__(self, sherpa):
         self.sherpa = sherpa
 
 

@@ -17,7 +17,7 @@ def addPartyUser(request):
         "partyId": partyId
         "userId": userId
         "status": status
-                "leader": leader
+        "leader": leader
     }
     """
     partyId = request.json['partyId']

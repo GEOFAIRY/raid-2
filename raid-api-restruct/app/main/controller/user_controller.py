@@ -15,7 +15,7 @@ import datetime
 from app.main.model.user import *
 
 
-def getUser(request):
+def getUser(id, steamId, displayName, email):
     """
     get users with or without search params
     params:
@@ -24,21 +24,17 @@ def getUser(request):
         - displayName
         - email
     """
-    id = request.args.get('id', default = None, type = int)
-    steamId = request.args.get('steamId', default = None, type = str)
-    displayName = request.args.get('displayName', default = None, type = str)
-    email = request.args.get('email', default = None, type = str)
 
     #build query based of params submitted
-    query = Users.query
+    query = User.query
     if (id != None):
-        query = query.filter(Users.id == id)
+        query = query.filter(User.id == id)
     if (steamId != None):
-        query = query.filter(Users.steamId == steamId)
+        query = query.filter(User.steamId == steamId)
     if (displayName != None):
-        query = query.filter(Users.displayName == displayName)
+        query = query.filter(User.displayName == displayName)
     if (email != None):
-        query = query.filter(Users.email == email)
+        query = query.filter(User.email == email)
 
     allUsers = query.all()
     result = usersSchema.dump(allUsers)
@@ -52,7 +48,7 @@ def getUser(request):
     return jsonify(result)
 
 
-def addUser(request):
+def addUser(steamId, password, displayName, email):
     """
     method to add a new user from a submitted json request
     required input:
@@ -63,10 +59,6 @@ def addUser(request):
         "email": email
     }
     """
-    steamId = request.json['steamId']
-    password = request.json['password']
-    displayName = request.json['displayName']
-    email = request.json['email']
 
     #validate email
     if (not User.emailValid(email)):
@@ -76,7 +68,7 @@ def addUser(request):
         print("email or password")
         return "Missing args", 400 # missing arguments
 
-    new_user = Users(steamId, password, displayName, email)
+    new_user = User(steamId, password, displayName, email)
 
     #commit user to database
     db.session.add(new_user)
@@ -93,10 +85,10 @@ def addUser(request):
 @auth.verify_password
 def verify_password(email_or_token, password):
     # first try to authenticate by token
-    user = Users.verify_auth_token(email_or_token)
+    user = User.verify_auth_token(email_or_token)
     if not user:
         # try to authenticate with email/password
-        user = Users.query.filter_by(email = email_or_token).first()
+        user = User.query.filter_by(email = email_or_token).first()
         if not user or not user.verify(password):
             return False
     g.user = user
