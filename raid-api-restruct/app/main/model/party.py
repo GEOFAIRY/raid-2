@@ -12,7 +12,7 @@ class Party(db.Model):
     """
     class for storing party data
     args:
-        partyId - Unique party identifier Int()
+        id - Unique party identifier Int()
         sherpa - if the raid is a sherpa raid Bool()
         timeCreated - the time created DateTime()
     """
@@ -31,7 +31,7 @@ class PartySchema(ma.Schema):
     """class for parsing party data"""
 
     class Meta:
-        fields = ('partyId', 'sherpa', 'timeCreated')
+        fields = ('id', 'sherpa', 'timeCreated')
 
 
 # init schemas

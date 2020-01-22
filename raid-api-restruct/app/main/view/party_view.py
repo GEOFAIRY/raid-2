@@ -25,14 +25,23 @@ def createParty():
 
     return party_controller.createParty(creatingUser, sherpa, status)
 
-@app.route('/party/<id>', methods=['GET'])
-def getParty(id):
+@app.route('/party', methods=['GET'])
+def getParty():
     """endpoint to return a single party data
 	ApiNote:
-			GET /party/:id
-	Args:
-		id: The id of the desired party to be found.
+			GET /party/:partyId
 	Returns:
-		party of entered id in Json format.
+		list of parties with searach terms in Json format.
 	"""
-    return party_controller.getPartyById(id)
+    id = request.args.get('id', default = None, type = int)
+    sherpa = request.args.get('sherpa', default = None, type = str)
+    capacity = request.args.get('capacity', default = None, type = int)
+
+    return party_controller.getPartyById(id, sherpa, capacity)
+
+@app.route('/party/<partyId>/join', methods=['PATCH'])
+@auth.login_required
+def joinParty(partyId):
+    joinUser = g.user
+    status = "Waiting for Players"
+    return party_controller.joinPartyById(partyId, joinUser, status)
