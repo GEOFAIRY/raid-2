@@ -16,5 +16,13 @@ raid-api/Pipfile.lock
 raid-api/db.sqlite
 raid-api/app/__pycache__/
 raid-api/config.cfg
+raid-api-restruct/__pycache__/
+raid-api-restruct/app/resource/config.cfg
+raid-api-restruct/.vscode
+raid-api-restruct/app/resource/database/db.sqlite
+raid-api-restruct/Pipfile.lock
+raid-api-restruct/.idea/
 
 raid-api-restruct/.idea/
+*.pyc
+.vs/

@@ -21,6 +21,14 @@ app.config.from_pyfile(os.path.join(baseDir, 'config.cfg'), silent=True)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+
+import logging
+
+# logging.basicConfig()
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
 #init endpoints
 from app import raids
 from app import users
+from app import parties
+
