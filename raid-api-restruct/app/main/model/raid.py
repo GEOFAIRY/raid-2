@@ -1,7 +1,8 @@
 from app import db, ma
 
+from marshmallow import fields
 from app.main.model.game import Game
-from app.main.model.phase import Phase
+from app.main.model.phase import Phase, PhaseSchema
 
 """Raid information handler"""
 
@@ -28,8 +29,9 @@ class Raid(db.Model):
 
 class RaidSchema(ma.Schema):
     """class for parsing raid data correctly"""
+    phases = fields.List(fields.Nested(PhaseSchema))
     class Meta:
-        fields = ('id', 'name', 'image')
+        additional = ('id', 'name', 'image')
 
 
 #init schemas

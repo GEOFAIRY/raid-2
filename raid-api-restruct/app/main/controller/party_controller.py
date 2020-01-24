@@ -11,7 +11,7 @@ from app.main.model.party import *
 from app.main.model.party_user import *
 
 
-def getPartyById(id, sherpa, capacity):
+def getParty(id, sherpa, capacity):
     """
 	Controller method to get a single party with given id.
 
@@ -29,14 +29,16 @@ def getPartyById(id, sherpa, capacity):
 
 
     allParties = query.all()
+
+    if capacity is not None:
+        for i in allParties:
+            if len(i.partyUsers) > capacity:
+                allParties.remove(i)
+
     result = partiesSchema.dump(allParties)
     if len(result) == 0:
         return "Parties not found", 404
-    if capacity is not None:
-        print(result)
-        for i in result:
-            if len(i['partyUsers']) > capacity:
-                del result[i]
+    print(result)
     return jsonify(result)
 
 def createParty(creatingUser, sherpa, status):

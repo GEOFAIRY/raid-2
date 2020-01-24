@@ -1,5 +1,6 @@
 from app import app, db, ma
 
+from marshmallow import fields
 from passlib.hash import sha256_crypt
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
@@ -8,7 +9,7 @@ from validate_email import validate_email
 
 import datetime
 
-from app.main.model.party_user import PartyUser
+from app.main.model.party_user import PartyUser, PartyUserSchema
 
 """User information handler"""
 

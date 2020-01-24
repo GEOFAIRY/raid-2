@@ -1,7 +1,8 @@
 from app import db, ma
 
+from marshmallow import fields
 from app.main.model.game import Game
-from app.main.model.party_user import PartyUser
+from app.main.model.party_user import PartyUser, PartyUserSchema
 
 import datetime
 
@@ -29,9 +30,10 @@ class Party(db.Model):
 
 class PartySchema(ma.Schema):
     """class for parsing party data"""
+    partyUsers = fields.List(fields.Nested(PartyUserSchema))
 
     class Meta:
-        fields = ('id', 'sherpa', 'timeCreated')
+        additional = ('id', 'sherpa', 'timeCreated')
 
 
 # init schemas

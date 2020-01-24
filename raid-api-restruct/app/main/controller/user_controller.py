@@ -37,14 +37,12 @@ def getUser(id, steamId, displayName, email):
         query = query.filter(User.email == email)
 
     allUsers = query.all()
-    result = usersSchema.dump(allUsers)
+    user_schema = UserSchema(many=True, only=("id", "steamId", "displayName", "timeCreated"))
+    result = user_schema.dump(allUsers)
 
     #format json to return
     if len(result) == 0:
         return "Users not found", 404
-    for i in result:
-        del i["password"]
-        del i["email"]
     return jsonify(result)
 
 

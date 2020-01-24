@@ -21,7 +21,7 @@ def createParty():
         sherpa = True
     else:
         sherpa = False
-    status = "Waiting for Players"
+    status = "Not Ready"
 
     return party_controller.createParty(creatingUser, sherpa, status)
 
@@ -37,11 +37,11 @@ def getParty():
     sherpa = request.args.get('sherpa', default = None, type = str)
     capacity = request.args.get('capacity', default = None, type = int)
 
-    return party_controller.getPartyById(id, sherpa, capacity)
+    return party_controller.getParty(id, sherpa, capacity)
 
 @app.route('/party/<partyId>/join', methods=['PATCH'])
 @auth.login_required
 def joinParty(partyId):
     joinUser = g.user
-    status = "Waiting for Players"
+    status = "Not Ready"
     return party_controller.joinPartyById(partyId, joinUser, status)
