@@ -26,3 +26,4 @@ raid-api-restruct/.idea/
 raid-api-restruct/.idea/
 *.pyc
 .vs/
+Pipfile

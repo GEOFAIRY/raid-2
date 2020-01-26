@@ -4,18 +4,11 @@ from app import app
 from app.main.controller import raid_controller
 
 
+
+
+
 @app.route('/game', methods=['GET'])
-def getGames():
-    """
-    endpoint to get all games
-        ApiNote:
-                GET /game
-    """
-    return game_controller.getGames()
-
-
-@app.route('/game/<id>', methods=['GET'])
-def getGame(id):
+def getGame():
     """endpoint to return a single games data
         ApiNote:
                         GET /game/:id
@@ -24,7 +17,12 @@ def getGame(id):
         Returns:
                 game of entered id in Json format.
         """
-    return game_controller.getGameById(id)
+
+    id = request.args.get('id', default = None, type = int)
+    raidId = request.args.get('raidId', default = None, type = int)
+    status = request.args.get('status', default = None, type = str)
+    partyId = request.args.get('partyId', default = None, type = int)
+    return game_controller.getGame(id, raidId, status, partyId)
 
 
 @app.route('/game', methods=['POST'])
@@ -40,4 +38,7 @@ def addGame(request):
         ApiNote:
                 POST /game
     """
-    return game_controller.addGame(request)
+    partyId = request.args.get('raidId', default = None, type = int)
+    raidId = request.args.get('partyId', default = None, type = int)
+    status = request.args.get('status', default = None, type = str)
+    return game_controller.addGame(raidId,partyId,status)

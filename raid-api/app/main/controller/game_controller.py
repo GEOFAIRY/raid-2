@@ -9,28 +9,33 @@ from flask_sqlalchemy import SQLAlchemy
 from app.main.model.game import *
 
 
-def getGames():
-	"""
-	Controller method to get all currently available games.
-	"""
-    allGames = Game.query.all()
-    result = gameSchema.dump(allGames)
-    return jsonify(result)
-
-
-def getGameById(id):
+def getGame(id, raidId, status, partyId):
     """
 	Controller method to get a single game with given id.
 
 	Args:
-		id: Id of the game to be found.
+		id: Id of the party to be found.
 	"""
-    gameSearched = Game.query.get(id)
-    if gameSearched == None:
-        return "Game not found", 404
-    return gameSchema.jsonify(gameSearched)
+    query =  Game.query
+    if (id != None):
+        query = query.filter(Game.id == id)
+    if (raidId != None):
+        query = query.filter(Game.raidId == raidId)
+    if (status != None):
+        query = query.filter(Game.status == status)
+    if (partyId != None):
+        query = query.filter(Game.partyId == partyId)
 
-def addGame(request):
+
+    allGames = query.all()
+    result = gameSchema.dump(allGames)
+    if len(result) == 0:
+        return "Games not found", 404
+    print(result)
+    return jsonify(result)
+
+
+def addGame(raidId,partyId,status):
     """
     method to add a new game from a submitted json request
     required input:
@@ -40,8 +45,10 @@ def addGame(request):
         "status": status
     }
     """
-    raidId = request.json['raidId']
-    partyId = request.json['partyId']
-    status = request.json['status']
-
     new_game = Game(raidId, partyId, status)
+    db.session.add(new_game
+    try:
+        db.session.commit()
+    except exc.OperationalError:
+        return "Database error", 500
+    return { "gameId": new_game.id }
