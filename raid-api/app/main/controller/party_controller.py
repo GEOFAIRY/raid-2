@@ -38,7 +38,6 @@ def getParty(id, sherpa, capacity):
     result = partiesSchema.dump(allParties)
     if len(result) == 0:
         return "Parties not found", 404
-    print(result)
     return jsonify(result)
 
 def createParty(creatingUser, sherpa, status):

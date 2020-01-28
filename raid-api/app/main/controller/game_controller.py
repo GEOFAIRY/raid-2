@@ -7,6 +7,7 @@ from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
 
 from app.main.model.game import *
+from app.main.model.party_user import *
 
 
 def getGame(id, raidId, status, partyId):
@@ -35,7 +36,7 @@ def getGame(id, raidId, status, partyId):
     return jsonify(result)
 
 
-def addGame(raidId,partyId,status):
+def addGame(user, raidId, partyId, status):
     """
     method to add a new game from a submitted json request
     required input:
@@ -45,6 +46,14 @@ def addGame(raidId,partyId,status):
         "status": status
     }
     """
+
+    query = PartyUser.query
+    query = query.filter(PartyUser.userId == user.id)
+    query = query.filter(PartyUser.leader == True)
+    query = query.filter(PartyUser.partyId == partyId)
+    partyUser_result = query.all()
+    if len(partyUser_result) != 1:
+        return "party not found or not leader", 404
     new_game = Game(raidId, partyId, status)
     db.session.add(new_game)
     try:
@@ -53,7 +62,7 @@ def addGame(raidId,partyId,status):
         return "Database error", 500
     return { "gameId": new_game.id }
 
-def leaveGame(userId,gameId):
+def deleteGame(gameId):
     """
     method to close a game
     Args:
@@ -63,9 +72,8 @@ def leaveGame(userId,gameId):
     query = query.filter(Game.gameId == gameId)
     allGames = query.all()
     result = gameSchema.dump(allGames)
-     try:
+    try:
         db.session.delete(result)
     except exc.OperationalError:
         return "Database error", 500
-    return { "Game is deleted with id of ": gameId}
-    
+    return "Game Deleted", 200

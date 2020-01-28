@@ -1,13 +1,14 @@
-from flask import jsonify
+from flask import jsonify, request, g
 
-from app import app
-from app.main.controller import raid_controller
+from app import app, auth
+from app.main.controller import game_controller
 
 
 
 
 
 @app.route('/game', methods=['GET'])
+@auth.login_required
 def getGame():
     """endpoint to return a single games data
         ApiNote:
@@ -26,7 +27,8 @@ def getGame():
 
 
 @app.route('/game', methods=['POST'])
-def addGame(request):
+@auth.login_required
+def addGame():
     """
     endpoint to add a new game from a submitted json request
     required input:
@@ -38,15 +40,17 @@ def addGame(request):
         ApiNote:
                 POST /game
     """
-    partyId = request.args.get('raidId', default = None, type = int)
-    raidId = request.args.get('partyId', default = None, type = int)
-    status = request.args.get('status', default = None, type = str)
-    return game_controller.addGame(raidId,partyId,status)
+    user = g.user
+    partyId = request.json['raidId']
+    raidId = request.json['partyId']
+    status = request.json['status']
+    return game_controller.addGame(user, raidId, partyId, status)
 
 
 @app.route('/game/leave', methods=['GET'])
-def leaveGame(request):
-"""
+@auth.login_required
+def leaveGame():
+    """
     endpoint to leave a game from a submitted json request
     required input:
     {
@@ -55,5 +59,6 @@ def leaveGame(request):
         ApiNote:
                 POST /game
     """
+    user = g.user
     gameId = request.args.get('gameId', default = None, type = int)
-    return game_controller.leaveGame(gameId)
+    return game_controller.leaveGame(user, gameId)

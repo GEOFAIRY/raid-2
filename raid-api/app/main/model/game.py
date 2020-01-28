@@ -19,10 +19,9 @@ class Game(db.Model):
     timeCreated = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
 
-    def __init__(self, raidId, partyId, currentPhaseId, status):
+    def __init__(self, raidId, partyId, status):
         self.raidId = raidId
         self.partyId = partyId
-        self.currentPhaseId = currentPhaseId
         self.status = status
 
 
@@ -30,7 +29,7 @@ class GameSchema(ma.Schema):
     """class for parsing game data correctly"""
 
     class Meta:
-        fields = ('id', 'raidId', 'partyId', 'currentPhaseId', 'status', 'timeCreated')
+        fields = ('id', 'raidId', 'partyId', 'status', 'timeCreated')
 
 
 # init schemas
