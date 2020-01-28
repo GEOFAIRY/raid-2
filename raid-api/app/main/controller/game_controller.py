@@ -46,9 +46,26 @@ def addGame(raidId,partyId,status):
     }
     """
     new_game = Game(raidId, partyId, status)
-    db.session.add(new_game
+    db.session.add(new_game)
     try:
         db.session.commit()
     except exc.OperationalError:
         return "Database error", 500
     return { "gameId": new_game.id }
+
+def leaveGame(userId,gameId):
+    """
+    method to close a game
+    Args:
+        gameId: id of game to close
+    """
+    query = Game.query
+    query = query.filter(Game.gameId == gameId)
+    allGames = query.all()
+    result = gameSchema.dump(allGames)
+     try:
+        db.session.delete(result)
+    except exc.OperationalError:
+        return "Database error", 500
+    return { "Game is deleted with id of ": gameId}
+    

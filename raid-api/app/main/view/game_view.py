@@ -42,3 +42,18 @@ def addGame(request):
     raidId = request.args.get('partyId', default = None, type = int)
     status = request.args.get('status', default = None, type = str)
     return game_controller.addGame(raidId,partyId,status)
+
+
+@app.route('/game/leave', methods=['GET'])
+def leaveGame(request):
+"""
+    endpoint to leave a game from a submitted json request
+    required input:
+    {
+        "gameId": gameId
+    }
+        ApiNote:
+                POST /game
+    """
+    gameId = request.args.get('gameId', default = None, type = int)
+    return game_controller.leaveGame(gameId)

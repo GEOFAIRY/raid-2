@@ -81,3 +81,28 @@ def joinPartyById(partyId, joinUser, status):
     else:
         return "party full", 400
 
+
+
+def leavePartyById(partyId, joinUser):
+    """method to leave a new partyUser to an existing party
+
+    Arguments:
+        partyId {Integer} -- the party to leave
+        joinUser {User} -- the user to leave a PartyUser with and leave to party
+    """
+    leavingParty = Party.query.get(partyId)
+
+    query = PartyUser.query
+    query = query.filter(PartyUser.partyId == partyId)
+    query = query.filter(PartyUser.userId == joinUser.userId)
+    partyUser = query.all()
+    result = partyUserSchema.dump(partyUser)
+
+    if leavingParty == None:
+        return "Party not found", 404
+    try:
+        db.session.delete(result)
+    except exc.OperationalError:
+        return "Database error", 500
+    return { "left party with id of ": partyId}
+

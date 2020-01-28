@@ -45,3 +45,10 @@ def joinParty(partyId):
     joinUser = g.user
     status = "Not Ready"
     return party_controller.joinPartyById(partyId, joinUser, status)
+
+
+@app.route('/party/<partyId>/leave', methods=['PATCH'])
+@auth.login_required
+def leaveParty(partyId):
+    joinUser = g.user
+    return party_controller.leavePartyById(partyId, joinUser)
