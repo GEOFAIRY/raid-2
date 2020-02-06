@@ -13,16 +13,7 @@ Vue.config.productionTip = false
 Vue.mixin({
   data: function() {
     return {
-      serverAddress: 'http://127.0.0.1:5000/',
-      token: null
-    }
-  },
-  methods: {
-    setToken: function(input) {
-      this.token = input
-    },
-    getToken: function() {
-      return this.token
+      serverAddress: 'http://127.0.0.1:5000/'
     }
   }
 })

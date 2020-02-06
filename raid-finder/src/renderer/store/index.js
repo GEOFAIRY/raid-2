@@ -3,31 +3,15 @@ import Vuex from 'vuex'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
 
+import modules from './modules'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules,
   plugins: [
     createPersistedState(),
     createSharedMutations()
   ],
-  strict: process.env.NODE_ENV !== 'production',
-  state: {
-    isLoggedIn: false,
-    token: null
-  },
-  mutations: {
-    login(state, token) {
-      state.token = token
-      state.isLoggedIn = true
-    },
-    logout(state) {
-      state.token = null
-      state.isLoggedIn = false
-    }
-  },
-  actions: {
-    login(context, token) {
-      context.commit('login', token)
-    }
-  }
+  strict: process.env.NODE_ENV !== 'production'
 })

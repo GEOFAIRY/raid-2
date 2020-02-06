@@ -73,6 +73,9 @@ export default {
       steamId: ''
     }
   },
+  mounted: function() {
+    this.$store.dispatch('LOGIN', 'token')
+  },
   methods: {
     swapFrame: function() {
       //  method to change to and from registration and login frames
@@ -97,19 +100,21 @@ export default {
       this.steamId = ''
     },
 
-    login: function(email, password) {
+    login(email, password) {
       // method to contact token endpoint and get a user token
       this.$http
         .get(this.serverAddress + 'token', {
           auth: {username: email, password: password}
         })
         .then(
-          (response) => {
+          response => {
             // this.setToken(response.data.token)
-            this.$store.dispatch('login', response.data.token)
+            this.$store.dispatch('LOGIN', response.data.token)
+            console.log(this.$store)
+            console.log(response.data.token)
             this.$router.push({name: 'raid-selector'})
           },
-          (error) => {
+          error => {
             if (error.response.status === 403) {
               // user doesnt exist
               this.infoTextUpdate(true, 'Email/Password not recognised')
@@ -197,13 +202,13 @@ export default {
           email: this.email
         })
         .then(
-          () => {
+          function(response) {
             // success
             this.swapFrame()
             this.infoTextUpdate(false, 'Successfully registered! Please login')
             this.updateButtonState(false)
           },
-          (error) => {
+          function(error) {
             // failed
             this.infoTextUpdate(true, error.response.data)
             this.updateButtonState(false)
