@@ -10,5 +10,24 @@ export default new Vuex.Store({
     createPersistedState(),
     createSharedMutations()
   ],
-  strict: process.env.NODE_ENV !== 'production'
+  strict: process.env.NODE_ENV !== 'production',
+  state: {
+    isLoggedIn: false,
+    token: null
+  },
+  mutations: {
+    login(state, token) {
+      state.token = token
+      state.isLoggedIn = true
+    },
+    logout(state) {
+      state.token = null
+      state.isLoggedIn = false
+    }
+  },
+  actions: {
+    login(context, token) {
+      context.commit('login', token)
+    }
+  }
 })

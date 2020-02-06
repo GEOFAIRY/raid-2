@@ -1,6 +1,11 @@
 <template>
   <div id="cards">
-    <div class="card" v-for="raid in raids" v-bind:key="raid.id">
+    <div
+      class="card"
+      v-for="raid in raids"
+      v-bind:key="raid.id"
+      @click="gameSelector(raid.id)"
+    >
       <img class="card-image" :src="raid.image" alt="Cannot find image" />
       <div class="container">
         <h4>
@@ -9,7 +14,11 @@
       </div>
     </div>
     <div id="logoutCard" v-on:click="logout()">
-      <img class="logout-image" src="~@/assets/logout.png" alt="Cannot find image"/>
+      <img
+        class="logout-image"
+        src="~@/assets/logout.png"
+        alt="Cannot find image"
+      />
       <h4>Logout</h4>
     </div>
   </div>
@@ -35,8 +44,12 @@ export default {
     },
     logout: function() {
       // logout current user
-      this.token = null
+      this.$store.commit('logout')
       this.$router.push({name: 'login'})
+    },
+    gameSelector: function(raidId) {
+      // move to game seletor with a raid id
+      this.$router.push({name: 'game-selector', params: {raidId: raidId}})
     }
   }
 }
@@ -47,7 +60,6 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  
 }
 
 .text {
@@ -62,7 +74,6 @@ export default {
   grid-template-columns: auto auto auto;
   font-family: sans-serif;
   background: #191919;
-;
 }
 
 #logoutCard {
@@ -87,7 +98,8 @@ export default {
 }
 
 /* On mouse-over, add a deeper shadow */
-.card:hover, #logoutCard:hover {
+.card:hover,
+#logoutCard:hover {
   box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.2);
 }
 

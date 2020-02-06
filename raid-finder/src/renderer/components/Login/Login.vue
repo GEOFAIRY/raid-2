@@ -105,7 +105,8 @@ export default {
         })
         .then(
           (response) => {
-            this.token = response.data.token
+            // this.setToken(response.data.token)
+            this.$store.dispatch('login', response.data.token)
             this.$router.push({name: 'raid-selector'})
           },
           (error) => {

@@ -27,3 +27,7 @@ raid-api-restruct/.idea/
 *.pyc
 .vs/
 Pipfile
+
+raid-finder/test/e2e/specs/
+
+*.sqlite

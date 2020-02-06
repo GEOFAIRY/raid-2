@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/RaidSelector/RaidSelector').default
     },
     {
+      path: '/games/:raidId',
+      name: 'game-selector',
+      component: require('@/components/GameSelector/GameSelector').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
