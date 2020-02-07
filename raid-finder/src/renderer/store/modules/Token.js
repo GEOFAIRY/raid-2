@@ -11,12 +11,22 @@ const mutations = {
   LOGOUT(state) {
     state.token = null
     state.isLoggedIn = false
+  },
+  TEST(state) {
+    state.token = 'test passed'
+    state.isLoggedIn = true
   }
 }
 
 const actions = {
-  LOGIN({commit, token}) {
+  LOGIN({commit}, token) {
     commit('LOGIN', token)
+  },
+  LOGOUT({commit}) {
+    commit('LOGOUT')
+  },
+  TEST({commit}) {
+    commit('TEST')
   }
 }
 

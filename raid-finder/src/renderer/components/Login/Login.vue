@@ -73,9 +73,6 @@ export default {
       steamId: ''
     }
   },
-  mounted: function() {
-    this.$store.dispatch('LOGIN', 'token')
-  },
   methods: {
     swapFrame: function() {
       //  method to change to and from registration and login frames
@@ -110,8 +107,6 @@ export default {
           response => {
             // this.setToken(response.data.token)
             this.$store.dispatch('LOGIN', response.data.token)
-            console.log(this.$store)
-            console.log(response.data.token)
             this.$router.push({name: 'raid-selector'})
           },
           error => {

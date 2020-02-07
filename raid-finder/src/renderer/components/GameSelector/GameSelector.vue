@@ -31,16 +31,16 @@ export default {
   methods: {
     getRaid: function() {
       this.$http
-        .get(this.serverAddress + 'raids/' + this.raidId, {
-          auth: {username: this.$store.state.token, password: null}
-        })
+        .get(this.serverAddress + 'raids/' + this.raidId)
         .then((response) => {
           this.raid = response.data
         })
     },
     getGames: function() {
       this.$http
-        .get(this.serverAddress + 'game?raidId=' + this.raidId)
+        .get(this.serverAddress + 'game?raidId=' + this.raidId, {
+          auth: {username: this.$store.state.Token.token, password: null}
+        })
         .then((response) => {
           this.games = response.data
           console.log(this.games)

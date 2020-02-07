@@ -44,7 +44,7 @@ export default {
     },
     logout: function() {
       // logout current user
-      this.$store.commit('logout')
+      this.$store.dispatch('LOGOUT')
       this.$router.push({name: 'login'})
     },
     gameSelector: function(raidId) {

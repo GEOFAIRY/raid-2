@@ -17,6 +17,10 @@ def getGame(id, raidId, status, partyId):
 	Args:
 		id: Id of the party to be found.
 	"""
+    print(id)
+    print(raidId)
+    print(status)
+    print(partyId)
     query =  Game.query
     if (id != None):
         query = query.filter(Game.id == id)
@@ -29,7 +33,7 @@ def getGame(id, raidId, status, partyId):
 
 
     allGames = query.all()
-    result = gameSchema.dump(allGames)
+    result = gamesSchema.dump(allGames)
     if len(result) == 0:
         return "Games not found", 404
     print(result)
