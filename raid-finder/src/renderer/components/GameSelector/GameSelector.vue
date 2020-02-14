@@ -10,6 +10,9 @@
         <th>Status</th>
         <th>Sherpa</th>
       </tr>
+      <tr v-for="game in games" v-bind:key="game.id">
+        <th> {{ game. }}</th>
+      </tr>
     </table>
   </div>
 </template>

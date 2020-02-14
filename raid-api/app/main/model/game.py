@@ -24,6 +24,19 @@ class Game(db.Model):
         self.partyId = partyId
         self.status = status
 
+    def gameJsonParsing(json):
+        result = []
+        gameExists = False
+        for i in json:
+            for j in result:
+                if j["id"] == i[0]:
+                    gameExists = True
+                    j["users"].append({"id": i[4], "leader": i[5], "status": i[6]})
+            if not gameExists:
+                newEntry = {"id": i[0], "status": i[1], "created": i[2], "sherpa": i[3], "users": [{"id": i[4], "leader": i[5], "status": i[6]}]}
+                result.append(newEntry)
+        return result
+
 
 class GameSchema(ma.Schema):
     """class for parsing game data correctly"""

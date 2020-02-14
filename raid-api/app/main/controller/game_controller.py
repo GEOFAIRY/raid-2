@@ -8,20 +8,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app.main.model.game import *
 from app.main.model.party_user import *
+from app.main.model.party import *
 
 
 def getGame(id, raidId, status, partyId):
     """
-	Controller method to get a single game with given id.
+        Controller method to get a single game with given id.
 
-	Args:
-		id: Id of the party to be found.
-	"""
-    print(id)
-    print(raidId)
-    print(status)
-    print(partyId)
-    query =  Game.query
+        Args:
+                id: Id of the party to be found.
+        """
+    query = Game.query
     if (id != None):
         query = query.filter(Game.id == id)
     if (raidId != None):
@@ -31,12 +28,15 @@ def getGame(id, raidId, status, partyId):
     if (partyId != None):
         query = query.filter(Game.partyId == partyId)
 
+    result = db.session.query(Game.id, Game.status, Game.timeCreated, Party.sherpa,
+                              PartyUser.userId, PartyUser.leader, PartyUser.status)\
+                                  .join(Party.games)\
+                                      .join(Party.partyUsers)\
+                                          .all()
 
-    allGames = query.all()
-    result = gamesSchema.dump(allGames)
     if len(result) == 0:
         return "Games not found", 404
-    print(result)
+    result = Game.gameJsonParsing(result)
     return jsonify(result)
 
 
@@ -64,7 +64,8 @@ def addGame(user, raidId, partyId, status):
         db.session.commit()
     except exc.OperationalError:
         return "Database error", 500
-    return { "gameId": new_game.id }
+    return {"gameId": new_game.id}
+
 
 def deleteGame(gameId):
     """
