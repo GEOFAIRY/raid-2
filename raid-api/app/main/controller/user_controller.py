@@ -23,6 +23,9 @@ def getUser(id, steamId, displayName, email):
         - steamId
         - displayName
         - email
+
+    returns:
+        - an array in json format of the users
     """
 
     #build query based of params submitted
@@ -56,6 +59,9 @@ def addUser(steamId, password, displayName, email):
         "displayName": displayName
         "email": email
     }
+
+    returns:
+        -the id of the new user
     """
 
     #validate email
@@ -82,6 +88,15 @@ def addUser(steamId, password, displayName, email):
 
 @auth.verify_password
 def verify_password(email_or_token, password):
+    """method to check a users login credentials
+    
+    Arguments:
+        email_or_token {String} -- a string which could be a token or email
+        password {String} -- the raw password to check if needed
+    
+    Returns:
+        Boolean -- whether the login credentials are valid
+    """    
     # first try to authenticate by token
     user = User.verify_auth_token(email_or_token)
     if not user:
@@ -95,5 +110,10 @@ def verify_password(email_or_token, password):
 
 @auth.login_required
 def get_auth_token():
+    """method to create a new token for the /token endpoint
+    
+    Returns:
+        Dict -- a json format containing the new token as a string
+    """    
     token = g.user.generate_auth_token()
     return jsonify({ 'token': token.decode('ascii') }), 201

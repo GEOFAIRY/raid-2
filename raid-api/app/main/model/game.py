@@ -27,9 +27,16 @@ class Game(db.Model):
         self.phaseId = phaseId
 
     def gameJsonParsing(json):
+        """method to parse custom game query into python dict format
+        
+        Arguments:
+            json {Array} -- an Array of dicts from the game query
+        
+        Returns:
+            Array -- an array of dicts in the correct format to be sent
+        """        
         result = []
         gameExists = False
-        print(json)
         for i in json:
             for j in result:
                 if j["id"] == i[0]:
@@ -40,6 +47,7 @@ class Game(db.Model):
                 newEntry = {"id": i[0], "status": i[1], "created": i[2], "sherpa": i[3], "phase": i[4], "users": [
                     {"id": i[5], "displayName": i[6], "leader": i[7], "status": i[7]}]}
                 result.append(newEntry)
+            gameExists = False
         return result
 
 

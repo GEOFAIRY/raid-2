@@ -15,6 +15,9 @@ def getGame():
                         GET /game/:id
         Args:
                 id: The id of the desired game to be found.
+                raidId: The raid id to filter by
+                status: the game status to filter by
+                partyId: the party id to filter by
         Returns:
                 game of entered id in Json format.
         """
@@ -36,6 +39,7 @@ def addGame():
         "raidId": raidId
         "partyId": partyId
         "status": status
+        "phaseId": phaseId
     }
         ApiNote:
                 POST /game
@@ -45,7 +49,7 @@ def addGame():
     raidId = request.json['partyId']
     status = request.json['status']
     phaseId = request.json['phaseId']
-    return game_controller.addGame(user, raidId, partyId, status, phaseId)
+    return game_controller.addGame(user, raidId, partyId, status, phaseId    )
 
 
 @app.route('/game/leave', methods=['GET'])

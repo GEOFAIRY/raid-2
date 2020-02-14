@@ -41,20 +41,60 @@ class User(db.Model):
         self.email = email
 
     def verify(self, password):
+        """method to verify a given password with a stored hash
+        
+        Arguments:
+            password {string} -- the password to check
+        
+        Returns:
+            Boolean -- whether the password matches the hash
+        """        
         return sha256_crypt.verify(password, self.password)
 
     def generate_auth_token(self, expiration=600):
+        """method to generate a new auth token
+        
+        Keyword Arguments:
+            expiration {int} -- the time until the token expires (default: {600})
+        
+        Returns:
+            string -- the token generated
+        """        
         s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
         return s.dumps({'id': self.id})
 
     def encrypt(self, password):
+        """method to encrypt a given password
+        
+        Arguments:
+            password {String} -- the password to encrypt
+        
+        Returns:
+            String -- the encrypted password
+        """        
         return sha256_crypt.encrypt(password)
 
     def emailValid(email):
+        """method to validate a given email
+        
+        Arguments:
+            email {String} -- the email to verify
+        
+        Returns:
+            Boolean -- whether the email is valid or not
+        """        
         return validate_email(email)
 
     @staticmethod
     def verify_auth_token(token):
+        """method to check if a token is legitimate
+        
+        Arguments:
+            token {String} -- the token to check
+        
+        Returns:
+            User -- the user with the matching token
+        """        
         s = Serializer(app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
