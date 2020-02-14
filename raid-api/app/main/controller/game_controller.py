@@ -5,10 +5,13 @@ import os
 from flask import Flask, jsonify, request
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
 
 from app.main.model.game import *
 from app.main.model.party_user import *
 from app.main.model.party import *
+from app.main.model.user import *
+from app.main.model.phase import *
 
 
 def getGame(id, raidId, status, partyId):
@@ -18,7 +21,13 @@ def getGame(id, raidId, status, partyId):
         Args:
                 id: Id of the party to be found.
         """
-    query = Game.query
+
+    query = db.session.query(Game.id, Game.status, Game.timeCreated, Party.sherpa, Phase.name,
+                              User.id, User.displayName , PartyUser.leader, PartyUser.status)\
+                                  .join(Party.games)\
+                                      .join(Party.partyUsers)\
+                                          .join(User)\
+                                              .join(Phase)
     if (id != None):
         query = query.filter(Game.id == id)
     if (raidId != None):
@@ -27,12 +36,8 @@ def getGame(id, raidId, status, partyId):
         query = query.filter(Game.status == status)
     if (partyId != None):
         query = query.filter(Game.partyId == partyId)
-
-    result = db.session.query(Game.id, Game.status, Game.timeCreated, Party.sherpa,
-                              PartyUser.userId, PartyUser.leader, PartyUser.status)\
-                                  .join(Party.games)\
-                                      .join(Party.partyUsers)\
-                                          .all()
+    
+    result = query.all()
 
     if len(result) == 0:
         return "Games not found", 404
@@ -40,7 +45,7 @@ def getGame(id, raidId, status, partyId):
     return jsonify(result)
 
 
-def addGame(user, raidId, partyId, status):
+def addGame(user, raidId, partyId, status, phaseId):
     """
     method to add a new game from a submitted json request
     required input:
@@ -58,7 +63,7 @@ def addGame(user, raidId, partyId, status):
     partyUser_result = query.all()
     if len(partyUser_result) != 1:
         return "party not found or not leader", 404
-    new_game = Game(raidId, partyId, status)
+    new_game = Game(raidId, partyId, status, phaseId)
     db.session.add(new_game)
     try:
         db.session.commit()

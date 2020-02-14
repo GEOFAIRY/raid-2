@@ -17,6 +17,8 @@ class Phase(db.Model):
     order = db.Column(db.Integer)
     name = db.Column(db.String)
 
+    games = db.relationship('Game', backref='phase', lazy=True)
+
     def __init__(self, raidId, order, name):
         self.raidId = raidId
         self.order = order

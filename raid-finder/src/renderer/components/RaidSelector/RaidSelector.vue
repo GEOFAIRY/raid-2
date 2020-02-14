@@ -72,7 +72,6 @@ export default {
 #cards {
   display: inline-grid;
   grid-template-columns: auto auto auto;
-  font-family: sans-serif;
   background: #191919;
 }
 

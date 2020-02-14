@@ -44,7 +44,8 @@ def addGame():
     partyId = request.json['raidId']
     raidId = request.json['partyId']
     status = request.json['status']
-    return game_controller.addGame(user, raidId, partyId, status)
+    phaseId = request.json['phaseId']
+    return game_controller.addGame(user, raidId, partyId, status, phaseId)
 
 
 @app.route('/game/leave', methods=['GET'])
