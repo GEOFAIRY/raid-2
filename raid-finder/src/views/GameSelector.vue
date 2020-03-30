@@ -2,7 +2,7 @@
   <div id="body">
     <div id="headerBar">
       <div class="divButton" @click="navigateRaidSelector()">
-        <b>< Raids</b>
+        <b>Raids</b>
       </div>
       <h4>Games for {{ this.raid.name }}</h4>
       <div class="divButton">
@@ -79,34 +79,28 @@ export default {
   font-weight: 500;
   font-family: neue-haas-grotesk-display, sans-serif;
 }
-
 #headerBar {
   display: inline-grid;
   grid-template-columns: auto auto auto;
   padding-bottom: 10px;
   width: 900px;
 }
-
 .divButton {
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-left: 20%;
   margin-right: 20%;
-
 }
-
 table {
   border-collapse: collapse;
   width: 100%;
 }
-
 td,
 th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
-
 tr:nth-child(even) {
   background-color: #dddddd;
 }

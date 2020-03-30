@@ -187,7 +187,7 @@ export default {
       }
     },
 
-    register: function(steamId, password, displayName, email) {
+    register: function() {
       // method to contact user endpoint to post a new user
       this.$http
         .post(this.serverAddress + 'users', {
@@ -197,7 +197,7 @@ export default {
           email: this.email
         })
         .then(
-          function(response) {
+          function() {
             // success
             this.swapFrame()
             this.infoTextUpdate(false, 'Successfully registered! Please login')
@@ -241,12 +241,12 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  background: #34495e;
+#login {
+  width: 100vw;
+  height: 100vh;
+  background: #191919;
 }
+
 .login {
   width: 300px;
   padding: 40px;
@@ -254,7 +254,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #191919;
+  background: #000000;
   text-align: center;
 }
 .login h1 {
