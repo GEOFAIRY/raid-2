@@ -70,38 +70,5 @@ export default {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  color: white;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-family: neue-haas-grotesk-display, sans-serif;
-}
-#headerBar {
-  display: inline-grid;
-  grid-template-columns: auto auto auto;
-  padding-bottom: 10px;
-  width: 900px;
-}
-.divButton {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-left: 20%;
-  margin-right: 20%;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-td,
-th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
+
 </style>

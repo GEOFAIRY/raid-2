@@ -82,14 +82,10 @@ export default {
       } else {
         this.registerShown = false
         this.loginRegisterSwapBtnText = 'Register'
-        document.getElementById('displayName').style.borderColor = '#3498db'
-        document.getElementById('steamId').style.borderColor = '#3498db'
       }
 
       this.infoTextUpdate(null, null)
 
-      document.getElementById('email').style.borderColor = '#3498db'
-      document.getElementById('password').style.borderColor = '#3498db'
 
       this.email = ''
       this.password = ''
@@ -127,19 +123,15 @@ export default {
       this.updateButtonState(true)
       this.infoTextUpdate(null, null)
 
-      document.getElementById('email').style.borderColor = '#3498db'
-      document.getElementById('password').style.borderColor = '#3498db'
 
       if (this.email === '') {
         // missing email
         this.infoTextUpdate(true, 'All fields required')
-        document.getElementById('email').style.borderColor = 'red'
         this.updateButtonState(false)
       }
       if (this.password === '') {
         // missing password
         this.infoTextUpdate(true, 'All fields required')
-        document.getElementById('password').style.borderColor = 'red'
         this.updateButtonState(false)
       }
       if (!this.infoToggle) {
@@ -152,33 +144,25 @@ export default {
       // method to check registration inputs and prepare for successful or failed post users request
       this.updateButtonState(true)
       this.infoTextUpdate(null, null)
-      document.getElementById('email').style.borderColor = '#3498db'
-      document.getElementById('password').style.borderColor = '#3498db'
-      document.getElementById('displayName').style.borderColor = '#3498db'
-      document.getElementById('steamId').style.borderColor = '#3498db'
 
       if (this.email === '') {
         // missing email
         this.infoTextUpdate(true, 'All fields required')
-        document.getElementById('email').style.borderColor = 'red'
         this.updateButtonState(false)
       }
       if (this.password === '') {
         // missing password
         this.infoTextUpdate(true, 'All fields required')
-        document.getElementById('password').style.borderColor = 'red'
         this.updateButtonState(false)
       }
       if (this.displayName === '') {
         // missing displayName
         this.infoTextUpdate(true, 'All fields required')
-        document.getElementById('displayName').style.borderColor = 'red'
         this.updateButtonState(false)
       }
       if (this.steamId === '') {
         // missing steamId
         this.infoTextUpdate(true, 'All fields required')
-        document.getElementById('steamId').style.borderColor = 'red'
         this.updateButtonState(false)
       }
       if (!this.infoToggle) {
@@ -218,14 +202,12 @@ export default {
         this.infoToggle = false
       } else if (error) {
         //  serve info text as an error
-        document.getElementById('infoText').style.color = 'red'
         this.infoText = text
         this.infoToggle = true
       } else if (!error) {
         //  serve info text as info
         this.infoText = text
         this.infoToggle = true
-        document.getElementById('infoText').style.color = 'lime'
       }
     },
 
@@ -256,69 +238,5 @@ export default {
   transform: translate(-50%, -50%);
   background: #000000;
   text-align: center;
-}
-.login h1 {
-  color: white;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-family: neue-haas-grotesk-display, sans-serif;
-}
-.login p {
-  color: red;
-  font-family: neue-haas-grotesk-display, sans-serif;
-}
-.login input[type='text'],
-.login input[type='password'] {
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-  border: 2px solid #3498db;
-  padding: 14px 10px;
-  width: 200px;
-  outline: none;
-  color: white;
-  border-radius: 24px;
-  transition: 0.25s;
-  font-family: neue-haas-grotesk-display, sans-serif;
-}
-.login input[type='text']:focus,
-.login input[type='password']:focus {
-  width: 280px;
-  border-color: #2ecc71;
-  font-family: neue-haas-grotesk-display, sans-serif;
-}
-#loginRegisterSwapBtn {
-  border: 2px solid #fd7c03;
-}
-#loginRegisterSwapBtn:hover,
-#loginRegisterSwapBtn:focus {
-  background: #fd7c03;
-}
-#loginRegisterSwapBtn:disabled {
-  background: gray;
-  border: 2px solid gray;
-}
-.login button {
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-  border: 2px solid #2ecc71;
-  padding: 14px 40px;
-  outline: none;
-  color: white;
-  border-radius: 24px;
-  transition: 0.25s;
-  cursor: pointer;
-  font-family: neue-haas-grotesk-display, sans-serif;
-}
-.login button:hover,
-button:focus {
-  background: #2ecc71;
-}
-.login button:disabled {
-  background: gray;
-  border: 2px solid gray;
 }
 </style>
