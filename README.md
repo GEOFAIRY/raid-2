@@ -1,3 +1,5 @@
+Project migrated to https://github.com/GEOFAIRY/d2raidfinder
+
 raid-2
 
 running the finder:
